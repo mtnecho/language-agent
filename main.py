@@ -6,7 +6,7 @@ from langchain.chains import ConversationChain
 from openai import OpenAI
 from langchain.memory import ConversationBufferMemory
 from gtts import gTTS
-from dotenv import load_dotenv
+# from dotenv import load_dotenv
 import os
 
 import http.server
@@ -33,7 +33,7 @@ server_thread.daemon = True
 server_thread.start()
 
 # 初始化 GPT 对话模型
-load_dotenv()
+# load_dotenv()
 llm = ChatOpenAI(model_name="gpt-4o", temperature=0.7, openai_api_key=os.getenv("OPEN_API_KEY"))
 
 memory = ConversationBufferMemory()
