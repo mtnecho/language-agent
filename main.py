@@ -6,7 +6,7 @@ from langchain.chains import ConversationChain
 from openai import OpenAI
 from langchain.memory import ConversationBufferMemory
 from gtts import gTTS
-# from dotenv import load_dotenv
+from dotenv import load_dotenv
 import os
 
 import http.server
@@ -33,8 +33,13 @@ server_thread.daemon = True
 server_thread.start()
 
 # 初始化 GPT 对话模型
-# load_dotenv()
-llm = ChatOpenAI(model_name="gpt-4o", temperature=0.7, openai_api_key=os.environ.get("API_KEY"))
+load_dotenv()
+api_key = os.getenv("API_KEY")
+llm = ChatOpenAI(model_name="gpt-4o", temperature=0.7, openai_api_key=api_key)
+if api_key:
+    print(f"获取到的 API_KEY 是: {api_key}")
+else:
+    print("未找到 API_KEY 环境变量。")
 
 memory = ConversationBufferMemory()
 
@@ -82,5 +87,6 @@ user_input = st.text_input("你：", placeholder="输入你想和 AI 交谈的�
 if st.button("发送"):
     if user_input:
         # response = llm.predict(text=user_input, memory=memory)
+        print(api_key)  # 打印 API 调用的详细信息
         response = conversation.predict(input=user_input)
         st.write(f"🤖 AI：{response}")
