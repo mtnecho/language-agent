@@ -39,7 +39,7 @@ llm = ChatOpenAI(model_name="gpt-4o", temperature=0.7, openai_api_key=api_key)
 if api_key:
     print(f"获取到的 API_KEY 是: {api_key}")
 else:
-    print("未找到 API_KEY 环境变量。")
+    st.write("未找到 API_KEY 环境变量。")
 
 memory = ConversationBufferMemory()
 
