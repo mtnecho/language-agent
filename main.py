@@ -34,7 +34,7 @@ server_thread.start()
 
 # 初始化 GPT 对话模型
 load_dotenv()
-api_key = os.getenv("API_KEY")
+api_key = st.secrets["API_KEY"]
 llm = ChatOpenAI(model_name="gpt-4o", temperature=0.7, openai_api_key=api_key)
 if api_key:
     print(f"获取到的 API_KEY 是: {api_key}")
