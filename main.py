@@ -9,6 +9,29 @@ from gtts import gTTS
 from dotenv import load_dotenv
 import os
 
+import http.server
+import socketserver
+import threading
+
+# 定义HTML文件所在的目录
+PORT = 8000
+DIRECTORY = "docs"
+
+class Handler(http.server.SimpleHTTPRequestHandler):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, directory=DIRECTORY, **kwargs)
+
+# 启动一个简单的HTTP服务器来提供HTML文件
+def start_server():
+    with socketserver.TCPServer(("", PORT), Handler) as httpd:
+        print(f"Serving at port {PORT}")
+        httpd.serve_forever()
+
+# 在单独的线程中启动服务器
+server_thread = threading.Thread(target=start_server)
+server_thread.daemon = True
+server_thread.start()
+
 # 初始化 GPT 对话模型
 load_dotenv()
 llm = ChatOpenAI(model_name="gpt-4o", temperature=0.7, openai_api_key=os.getenv("API_KEY"))
@@ -18,6 +41,10 @@ memory = ConversationBufferMemory()
 # Streamlit 页面标题
 st.title("AI语智")
 st.subheader("——基于AI Agent的互动式多语言学习平台")
+
+# 增加说明文档链接
+html_url = f"http://localhost:{PORT}/index.html"
+st.markdown(f"[说明文档]({html_url})", unsafe_allow_html=True)
 
 # =============== 语法分析 ===============
 st.subheader("📖 AI 语法分析")
